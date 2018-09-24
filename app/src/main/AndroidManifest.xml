@@ -25,6 +25,12 @@
             android:name=".GameRelated_Base_OptionHelp"
             android:theme="@android:style/ThemeOverlay.Material.Dialog"
             tools:targetApi="m" />
+        <activity
+            android:name=".GameRelated_Base_OptionMusic"
+            android:theme="@android:style/ThemeOverlay.Material.Dialog"
+            tools:targetApi="m" />
+        <activity android:name=".GameRelated_Base_OptionMusic_Handle" />
+
     </application>
 
 </manifest>
