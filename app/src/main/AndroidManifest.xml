@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ste.sokoban">
 
     <application
@@ -19,7 +20,11 @@
         <activity android:name=".GameRelated_Func_About" />
         <activity android:name=".GameRelated_Base_GameView" />
         <activity android:name=".GameRelated_Base_Maplist" />
-        <activity android:name=".GameRelated_Func_NewGame"></activity>
+        <activity android:name=".GameRelated_Func_NewGame" />
+        <activity
+            android:name=".GameRelated_Base_OptionHelp"
+            android:theme="@android:style/ThemeOverlay.Material.Dialog"
+            tools:targetApi="m" />
     </application>
 
 </manifest>
