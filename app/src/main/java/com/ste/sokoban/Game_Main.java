@@ -23,6 +23,10 @@ public class Game_Main extends Activity {
             case R.id.btnExit:
                 isFinish();
                 break;
+            case R.id.btnAbout:
+                intent = new Intent(Game_Main.this, Game_FuncAbout.class);
+                startActivity(intent);
+                break;
         }
     }
 
