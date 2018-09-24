@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">Sokoban</string>
+
+    <!-- Well, it's the game ... text -->
+    <string name="menu_settings">Setting</string>
+    <string name="about_text">About</string>
+    <string name="continue_text">Continue</string>
+    <string name="new_game_text">New Game</string>
+    <string name="exit_text">Exit</string>
+
+    <!-- And this one (go-back) -->
+    <string name="back_text">Go Back</string>
+
+    <!-- These belong to the 'OptionMenu' -->
+    <string name="musicText">Music Setting</string>
+    <string name="helpText">Help</string>
+
+    <!-- The Help text -->
+    <string name="helpContent">
+        \nTouch the place u wanna the android to go.\n
+    </string>
+
+    <string name="aboutContent">
+       \nThis `sokoban` app is written by TianEn Song.\n
+    </string>
+
+    <!-- The Music-related text -->
+    <string name="musicKey">Music</string>
+    <string name="musicTitle">"Playing: Life is strange - Main Theme "</string>
+    <string name="musicOn">Music On</string>
+    <string name="musicOff">Music Off</string>
 </resources>
