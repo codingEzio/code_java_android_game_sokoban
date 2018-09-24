@@ -16,7 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Game_FuncAbout"></activity>
+        <activity android:name=".GameRelated_Func_About" />
+        <activity android:name=".GameRelated_Base_GameView" />
+        <activity android:name=".GameRelated_Base_Maplist" />
+        <activity android:name=".GameRelated_Func_NewGame"></activity>
     </application>
 
 </manifest>
