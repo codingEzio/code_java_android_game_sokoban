@@ -9,10 +9,30 @@ import android.view.MenuItem;
 
 public class GameRelated_Func_NewGame extends Activity {
 
+    GameRelated_Base_GameView gameView = null;
+
+    public boolean continue_game;
+    private String s;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        continue_game = false;
+
+        s = getIntent().getStringExtra("continue");
+
+        if (s.equals("yes")) {
+            continue_game = true;
+        }
+
+        if (continue_game) {
+            loadMap();
+        }
+
         setContentView(R.layout.activity_game_related_func_new_game);
+
+        gameView = (GameRelated_Base_GameView) findViewById(R.id.viewCustomOurOwn);
     }
 
     @Override
@@ -25,6 +45,10 @@ public class GameRelated_Func_NewGame extends Activity {
     protected void onPause() {
         super.onPause();
         GameRelated_Base_OptionMusic_Handle.stop(this);
+
+        getPreferences(MODE_PRIVATE).edit().putString("maps", saveGame()).apply();
+        getPreferences(MODE_PRIVATE).edit().putLong("maprow", gameView.mapRow).apply();
+        getPreferences(MODE_PRIVATE).edit().putLong("mapcol", gameView.mapCol).apply();
     }
 
     @Override
@@ -55,10 +79,63 @@ public class GameRelated_Func_NewGame extends Activity {
 
                 startActivity(intentMusic);
                 break;
+
+            case R.id.itemBack:
+                gameView.back();
+                gameView.invalidate();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    public String saveGame() {
+        int[] saved = new int[gameView.mapRow * gameView.mapCol];
+
+        for (int i = 0; i < gameView.mapRow; i++) {
+            for (int j = 0; j < gameView.mapCol; j++) {
+                saved[i * gameView.mapRow + j] = gameView.map[i][j];
+            }
+        }
+
+        StringBuilder strBuffer = new StringBuilder();
+
+        for (int element : saved) {
+            strBuffer.append(element);
+        }
+
+        String s = strBuffer.toString();
+
+        return s;
+    }
+
+    // well, levelOne as single string
+
+    String levelOne = "0011100000121000001311111114342112346111111141000001210000011100";
+    public int[][] stored;
+
+    public void loadMap() {
+        String mapString = getPreferences(MODE_PRIVATE).getString("maps", levelOne);
+
+        int ii = (int) getPreferences(MODE_PRIVATE).getLong("maprow", 8);
+        int jj = (int) getPreferences(MODE_PRIVATE).getLong("mapcol", 8);
+
+        int[] maps = new int[mapString.length()];
+
+        for (int i = 0; i < maps.length; i++) {
+            maps[i] = mapString.charAt(i) - '0';
+        }
+
+        stored = new int[ii][jj];
+
+        int a = 0;
+
+        for (int m = 0; m < ii; m++) {
+            for (int n = 0; n < jj; n++) {
+                stored[m][n] = maps[a];
+                a++;
+            }
+        }
+    }
 
 }

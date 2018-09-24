@@ -14,9 +14,12 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import static com.ste.sokoban.GameRelated_Base_Maplist.getMap;
 
 public class GameRelated_Base_GameView extends View {
+
     // Variables - the Core
     private int gate = 0;
 
@@ -65,7 +68,15 @@ public class GameRelated_Base_GameView extends View {
 
         this.setFocusable(true);
 
-        initMap();
+        if (newgame.continue_game) {
+            map = newgame.stored;
+
+            getMapDetail();
+            getManPosition();
+        } else {
+            initMap();
+        }
+
         initPic();
     }
 
@@ -74,6 +85,8 @@ public class GameRelated_Base_GameView extends View {
 
         getMapDetail();
         getManPosition();
+
+        list.clear();
     }
 
     public int[][] getMap(int grade) {
@@ -186,6 +199,7 @@ public class GameRelated_Base_GameView extends View {
     public void moveUp() {
         if (map[manX - 1][manY] == BOX || map[manX - 1][manY] == BOXATGOAL) {
             if (map[manX - 2][manY] == GOAL || map[manX - 2][manY] == ROAD) {
+                storyMap(map);
                 map[manX - 2][manY] = map[manX - 2][manY] == GOAL ? BOXATGOAL : BOX;
 
                 map[manX - 1][manY] = MAN;
@@ -194,6 +208,7 @@ public class GameRelated_Base_GameView extends View {
             }
         } else {
             if (map[manX - 1][manY] == ROAD || map[manX - 1][manY] == GOAL) {
+                storyMap(map);
                 map[manX - 1][manY] = MAN;
                 map[manX][manY] = roadOrGoal(manX, manY);
 
@@ -205,6 +220,7 @@ public class GameRelated_Base_GameView extends View {
     public void moveDown() {
         if (map[manX + 1][manY] == BOX || map[manX + 1][manY] == BOXATGOAL) {
             if (map[manX + 2][manY] == GOAL || map[manX + 2][manY] == ROAD) {
+                storyMap(map);
                 map[manX + 2][manY] = map[manX + 2][manY] == GOAL ? BOXATGOAL : BOX;
 
                 map[manX + 1][manY] = MAN;
@@ -213,6 +229,7 @@ public class GameRelated_Base_GameView extends View {
             }
         } else {
             if (map[manX + 1][manY] == ROAD || map[manX + 1][manY] == GOAL) {
+                storyMap(map);
                 map[manX + 1][manY] = MAN;
                 map[manX][manY] = roadOrGoal(manX, manY);
 
@@ -224,6 +241,7 @@ public class GameRelated_Base_GameView extends View {
     public void moveLeft() {
         if (map[manX][manY - 1] == BOX || map[manX][manY - 1] == BOXATGOAL) {
             if (map[manX][manY - 2] == GOAL || map[manX][manY - 2] == ROAD) {
+                storyMap(map);
                 map[manX][manY - 2] = map[manX][manY - 2] == GOAL ? BOXATGOAL : BOX;
 
                 map[manX][manY - 1] = MAN;
@@ -232,6 +250,7 @@ public class GameRelated_Base_GameView extends View {
             }
         } else {
             if (map[manX][manY - 1] == ROAD || map[manX][manY - 1] == GOAL) {
+                storyMap(map);
                 map[manX][manY - 1] = MAN;
                 map[manX][manY] = roadOrGoal(manX, manY);
 
@@ -243,6 +262,7 @@ public class GameRelated_Base_GameView extends View {
     public void moveRight() {
         if (map[manX][manY + 1] == BOX || map[manX][manY + 1] == BOXATGOAL) {
             if (map[manX][manY + 2] == GOAL || map[manX][manY + 2] == ROAD) {
+                storyMap(map);
                 map[manX][manY + 2] = map[manX][manY + 2] == GOAL ? BOXATGOAL : BOX;
 
                 map[manX][manY + 1] = MAN;
@@ -251,6 +271,7 @@ public class GameRelated_Base_GameView extends View {
             }
         } else {
             if (map[manX][manY + 1] == ROAD || map[manX][manY + 1] == GOAL) {
+                storyMap(map);
                 map[manX][manY + 1] = MAN;
                 map[manX][manY] = roadOrGoal(manX, manY);
 
@@ -311,4 +332,60 @@ public class GameRelated_Base_GameView extends View {
             }
         }
     }
+
+    /* 保存进度相关 - Base */
+
+    class CurrentMap {
+        int[][] currMap;
+
+        public CurrentMap(int[][] maps) {
+            int row = maps.length;
+            int col = maps[0].length;
+
+            int[][] temp = new int[row][col];
+
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    temp[i][j] = maps[i][j];
+                }
+            }
+            this.currMap = temp;
+        }
+
+        public int[][] getMap() {
+            return currMap;
+        }
+    }
+
+    public ArrayList<CurrentMap> list = new ArrayList<CurrentMap>();
+
+    /* 保存进度相关 - Core */
+
+    public void back() {
+        if (list.size() > 0) {
+            CurrentMap priorMap = list.get(list.size() - 1);
+            map = priorMap.getMap();
+
+            getManPosition();
+
+            list.remove(list.size() - 1);
+        } else {
+            Toast.makeText(
+                    this.getContext(),
+                    "You can't go back.",
+                    Toast.LENGTH_SHORT
+            ).show();
+        }
+    }
+
+    public void storyMap(int[][] map) {
+        CurrentMap crtMap = new CurrentMap(map);
+
+        list.add(crtMap);
+
+        if (list.size() > 10) {
+            list.remove(0);
+        }
+    }
+
 }

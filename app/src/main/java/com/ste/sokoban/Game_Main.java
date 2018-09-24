@@ -29,6 +29,12 @@ public class Game_Main extends Activity {
                 break;
             case R.id.btnNew:
                 intent = new Intent(Game_Main.this, GameRelated_Func_NewGame.class);
+                intent.putExtra("continue", "no");
+                startActivity(intent);
+                break;
+            case R.id.btnContinue:
+                intent = new Intent(this, GameRelated_Func_NewGame.class);
+                intent.putExtra("continue", "yes");
                 startActivity(intent);
                 break;
         }
